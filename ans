@@ -1,0 +1,84 @@
+---------------------------project-------------------------------------------
+define relations and attributes
+a relationship in DBMS is the way in which two or more data sets are linked, i.e., any association between two entity types is called a relationship. So entity takes part in the relationship, and it is represented by a diamond shape.
+
+Attributes are objects that are contained in Master Data Services entities. Attribute values describe the members of the entity. An attribute can be used to describe a leaf member, a consolidated member, or a collection
+
+
+
+A primary key is the column or columns that contain values that uniquely identify each row in a table. A database table must have a primary key for Optim to insert, update, restore, or delete data from a database table. and it cannot be null.
+
+The FOREIGN KEY constraint is used to prevent actions that would destroy links between tables.
+
+A FOREIGN KEY is a field (or collection of fields) in one table, that refers to the PRIMARY KEY in another table.
+
+The table with the foreign key is called the child table, and the table with the primary key is called the referenced or parent table.
+
+
+
+
+
+
+
+
+queries.
+
+
+
+create table role(
+  id int primary key,
+  role_name varchar(100)
+  )
+  SELECT * from role
+  insert into role values(1,'developer');
+  insert into role values(2,'analytical');
+
+create  table user_has_role(
+  id int primary key,
+  role_start_time datetime,
+  role_end_time datetime null,
+  user_account_id int references role(id),
+  role_id int references user_has_role(id)
+  );
+  
+  insert into user_has_role values(1,'2000-12-31 23:59:59','2010-12-28 07:05:13',1,1)
+  insert into user_has_role values(2,'2000-12-28 07:05:13','2010-12-28 07:05:13',2,2)
+  
+  select * from user_has_role
+
+  create table user_account(
+    id int primary key,
+    user_name varchar(100),
+    email varchar(254),
+    password varchar(200),
+    password_salt varchar(50) null,
+    password_hash_algorithm varchar(70)
+    );
+ insert into user_account values(7,'mehnaz','mehnaz@gmail.com','123','12','#123')
+  insert into user_account values(8,'alqama','alqama@gmail.com','321','21','#321');
+  select * from user_account
+  drop table user_has_status
+   create table user_has_status(
+     id int primary key,
+     status_start_time datetime,
+     status_end_time datetime null,
+	user_account_id int references user_account(id),
+     status_id int references user_has_status(id)
+     );
+     select * from user_has_status
+insert into user_has_status values(1,'2000-06-17 05:19:12','2000-08-23 07:05:15',7,1),
+(2,'2000-06-13 04:12:12','2000-08-23 07:05:15',8,2);
+ select * from user_has_status    
+  create table status (
+    id int ,
+    status_name varchar(20),
+    is_user_working bit
+    );
+insert into status values(1,'eng',1),(2,'ser',0);
+select * from status;
+
+DELETE from status
+DELETE from user_has_status
+delete from user_account
+DELETE from user_has_role
+delete from role
